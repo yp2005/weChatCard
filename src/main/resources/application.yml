@@ -1,0 +1,82 @@
+server:
+  port: 8000
+  context-path: /weChatCard
+
+spring:
+  application:
+    name: weChatCard
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+---
+SUBSCRIPTION_APP_ID: 123
+SUBSCRIPTION_APP_SECRET: 123456
+UPLOAD_FILE_PATH: /temp
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/weChatCard?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+    testWhileIdle: true
+    validationQuery: select 1
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+logging:
+  level:
+    root: info
+
+jedis:
+  pool:
+    host: localhost
+    port: 6379
+    config:
+      maxTotal: 100
+      maxIdle: 10
+      maxWaitMillis: 100000
+
+swagger.enable: true
+---
+SUBSCRIPTION_APP_ID: 123
+SUBSCRIPTION_APP_SECRET: 123456
+spring:
+  redis:
+    host: redis
+    port: 6379
+  profiles: product
+  datasource:
+    url: jdbc:mysql://mysql:3306/LABORATORY?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    username: laboratory
+    password: laboratory
+    testWhileIdle: true
+    validationQuery: select 1
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+logging:
+  level:
+    root: info
+UPLOAD_FILE_PATH: /static/upload
+jedis:
+  pool:
+    host: redis
+    port: 6379
+    config:
+      maxTotal: 100
+      maxIdle: 10
+      maxWaitMillis: 100000
+
+#close in product
+swagger.enable: true
+
