@@ -60,15 +60,8 @@ public class WeChatUtil {
 
     // 核销卡券 accessToken是公众号的，param {"code": "12312313"}
     public JSONObject consumeCard(String accessToken, JSONObject param) {
-        JSONObject decryptCodeParam = new JSONObject();
-        decryptCodeParam.put("encrypt_code", param.getString("code"));
-        JSONObject result = this.decryptCode(accessToken, decryptCodeParam);
-        if(result.getInteger("errcode").equals(0)) {
-            param.put("code", result.getString("code"));
-            String url = this.wechatUrl + "/card/code/consume?access_token=" + accessToken;
-            return this.httpUtil.doPostResult(url, param.toJSONString(), null);
-        }
-        return result;
+        String url = this.wechatUrl + "/card/code/consume?access_token=" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
         // 正确消息格式 {"errcode":0,"errmsg":"ok"}
         // 错误消息根式 {"errcode":123,"errmsg":"xx"}
     }
@@ -83,15 +76,8 @@ public class WeChatUtil {
 
     // 设置卡券失效接口 accessToken是公众号的，param {  "code": "12312313",  "reason":"退款"}
     public JSONObject unavailableCard(String accessToken, JSONObject param) {
-        JSONObject decryptCodeParam = new JSONObject();
-        decryptCodeParam.put("encrypt_code", param.getString("code"));
-        JSONObject result = this.decryptCode(accessToken, decryptCodeParam);
-        if(result.getInteger("errcode").equals(0)) {
-            param.put("code", result.getString("code"));
-            String url = this.wechatUrl + "/card/code/unavailable?access_token=" + accessToken;
-            return this.httpUtil.doPostResult(url, param.toJSONString(), null);
-        }
-        return result;
+        String url = this.wechatUrl + "/card/code/unavailable?access_token=" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
         // 正确消息格式 {"errcode":0,"errmsg":"ok"}
         // 错误消息根式 {"errcode":123,"errmsg":"xx"}
     }
@@ -102,15 +88,8 @@ public class WeChatUtil {
     //   "check_consume" : true
     //}
     public JSONObject getCode(String accessToken, JSONObject param) {
-        JSONObject decryptCodeParam = new JSONObject();
-        decryptCodeParam.put("encrypt_code", param.getString("code"));
-        JSONObject result = this.decryptCode(accessToken, decryptCodeParam);
-        if(result.getInteger("errcode").equals(0)) {
-            param.put("code", result.getString("code"));
-            String url = this.wechatUrl + "/card/code/get?access_token=" + accessToken;
-            return this.httpUtil.doPostResult(url, param.toJSONString(), null);
-        }
-        return result;
+        String url = this.wechatUrl + "/card/code/get?access_token=" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
         // 正确消息格式 {"errcode":0,"errmsg":"ok"}
         // 错误消息根式 {"errcode":123,"errmsg":"xx"}
     }
@@ -152,6 +131,96 @@ public class WeChatUtil {
         // 错误消息根式 {"errcode":123,"errmsg":"xx"}
     }
 
+    // 设置开卡字段 param:
+//    {
+//        "card_id": "pbLatjnrwUUdZI641gKdTMJzHGfc",
+//            "service_statement": {
+//        "name": "会员守则",
+//                "url": "https://www.qq.com"
+//    },
+//        "bind_old_card": {
+//        "name": "老会员绑定",
+//                "url": "https://www.qq.com"
+//    },
+//        "required_form": {
+//        "can_modify"：false,
+//                "rich_field_list": [
+//        {
+//            "type": "FORM_FIELD_RADIO",
+//                "name": "兴趣",
+//                "values": [
+//            "钢琴",
+//                    "舞蹈",
+//                    "足球"
+//                ]
+//        },
+//        {
+//            "type": "FORM_FIELD_SELECT",
+//                "name": "喜好",
+//                "values": [
+//            "郭敬明",
+//                    "韩寒",
+//                    "南派三叔"
+//                ]
+//        },
+//        {
+//            "type": "FORM_FIELD_CHECK_BOX",
+//                "name": "职业",
+//                "values": [
+//            "赛车手",
+//                    "旅行家"
+//                ]
+//        }
+//        ],
+//        "common_field_id_list": [
+//        "USER_FORM_INFO_FLAG_MOBILE"
+//        ]
+//    },
+//        "optional_form": {
+//        "can_modify"：false,
+//                "common_field_id_list": [
+//        "USER_FORM_INFO_FLAG_LOCATION",
+//                "USER_FORM_INFO_FLAG_BIRTHDAY"
+//        ],
+//        "custom_field_list": [
+//        "喜欢的电影"
+//        ]
+//    }}
+    public JSONObject setActivateuserForm(String accessToken, JSONObject param) {
+        String url = this.wechatUrl + "/card/membercard/activateuserform/set?access_token=" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
+    }
+    // 拉取会员信息，param：
+//    {
+//        "card_id": "pbLatjtZ7v1BG_ZnTjbW85GYc_E8",
+//        "code": "916679873278"
+//    }
+    public JSONObject getUserinfo(String accessToken, JSONObject param) {
+        String url = this.wechatUrl + "/card/membercard/userinfo/get?access_token" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
+    }
+
+    // 激活会员卡，param
+//    {
+//        "init_bonus": 100,
+//        "init_bonus_record":"旧积分同步",
+//        "init_balance": 200,
+//        "membership_number": "AAA00000001",
+//        "code": "12312313",
+//        "card_id": "xxxx_card_id",
+//        "background_pic_url": "https://mmbiz.qlogo.cn/mmbiz/0?wx_fmt=jpeg",
+//        "init_custom_field_value1": "xxxxx"
+//    }
+    public JSONObject activateMembercard(String accessToken, JSONObject param) {
+        String url = this.wechatUrl + "/card/membercard/activate?access_token" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
+    }
+
+    // 更新会员信息
+    public JSONObject updateMembercard(String accessToken, JSONObject param) {
+        String url = this.wechatUrl + "/card/membercard/updateuser?access_token=" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
+    }
 
 
 }

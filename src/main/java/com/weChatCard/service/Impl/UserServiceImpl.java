@@ -2,7 +2,9 @@ package com.weChatCard.service.Impl;
 
 import com.weChatCard.bo.SearchPara;
 import com.weChatCard.bo.SearchParas;
+import com.weChatCard.entities.Card;
 import com.weChatCard.entities.User;
+import com.weChatCard.repositories.CardRepository;
 import com.weChatCard.repositories.UserRepository;
 import com.weChatCard.service.UserService;
 import com.weChatCard.utils.MySpecification;
@@ -36,9 +38,12 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
+    private CardRepository cardRepository;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, CardRepository cardRepository) {
         this.userRepository = userRepository;
+        this.cardRepository = cardRepository;
     }
 
     @Override
@@ -109,6 +114,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User get(Integer id) throws BusinessException {
         User user = userRepository.findOne(id);
+        if (user == null) {
+            throw new BusinessException(Messages.CODE_20001);
+        }
+        return user;
+    }
+
+    @Override
+    public User getByCardCode(String cardCode) throws BusinessException {
+        Card card = this.cardRepository.findByCardCode(cardCode);
+        if (card == null) {
+            throw new BusinessException(Messages.CODE_20001);
+        }
+        User user = userRepository.findByCardId(card.getId());
         if (user == null) {
             throw new BusinessException(Messages.CODE_20001);
         }

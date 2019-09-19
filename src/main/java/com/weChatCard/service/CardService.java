@@ -5,6 +5,7 @@ import com.weChatCard.utils.exception.BusinessException;
 import com.weChatCard.vo.CardVo;
 import com.weChatCard.vo.ListInput;
 import com.weChatCard.vo.ListOutput;
+import com.weChatCard.vo.WechatPushData;
 
 import java.util.List;
 
@@ -54,5 +55,11 @@ public interface CardService {
      * @return ListOutput
      */
     ListOutput list(ListInput listInput) throws BusinessException;
+
+    /**
+     * 用户提交用户信息后激活会员卡
+     * @param wechatPushData
+     */
+    void activeCard(WechatPushData wechatPushData) throws BusinessException;
 
 }

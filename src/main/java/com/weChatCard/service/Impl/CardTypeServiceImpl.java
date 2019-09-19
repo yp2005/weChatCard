@@ -75,6 +75,18 @@ public class CardTypeServiceImpl implements CardTypeService {
             throw new BusinessException(Messages.CODE_40010);
         }
         cardType.setCardKey(card_id);
+        JSONObject param = new JSONObject();
+        param.put("card_id", card_id);
+        JSONObject requiredForm = JSON.parseObject("{\n" +
+                "    \"can_modify\"：false,\n" +
+                "    \"common_field_id_list\": [\n" +
+                "        \"USER_FORM_INFO_FLAG_MOBILE\",\n" +
+                "        \"USER_FORM_INFO_FLAG_NAME\",\n" +
+                "        \"USER_FORM_INFO_FLAG_SEX\"\n" +
+                "    ]\n" +
+                "}");
+        param.put("required_form", requiredForm);
+        wu.setActivateuserForm(token, param);
         return this.cardTypeRepository.save(cardType.toEntity());
     }
 

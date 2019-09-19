@@ -1,8 +1,8 @@
 package com.weChatCard.service;
 
 import com.weChatCard.entities.Payment;
+import com.weChatCard.entities.User;
 import com.weChatCard.utils.exception.BusinessException;
-import com.weChatCard.vo.CardVo;
 import com.weChatCard.vo.ListInput;
 import com.weChatCard.vo.ListOutput;
 
@@ -55,5 +55,11 @@ public interface PaymentService {
      * @return ListOutput
      */
     ListOutput listByUserId(ListInput listInput, Integer userId) throws BusinessException;
+
+    /**
+     * 完成充值
+     * @param loginUser
+     */
+    void finishPay(User loginUser) throws BusinessException;
 
 }

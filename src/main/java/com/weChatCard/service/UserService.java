@@ -50,6 +50,13 @@ public interface UserService {
     public User get(Integer id) throws BusinessException;
 
     /**
+     * 根据cardCode获取用户信息
+     * @param cardCode
+     * @return User
+     */
+    public User getByCardCode(String cardCode) throws BusinessException;
+
+    /**
      * 修改用户信息
      * @param ids
      * @param loginUser

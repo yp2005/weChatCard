@@ -13,7 +13,6 @@ spring:
 ---
 SUBSCRIPTION_APP_ID: 123
 SUBSCRIPTION_APP_SECRET: 123456
-UPLOAD_FILE_PATH: /temp
 spring:
   profiles: dev
   datasource:

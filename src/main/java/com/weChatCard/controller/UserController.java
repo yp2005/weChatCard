@@ -122,6 +122,16 @@ public class UserController {
         return commonResponse;
     }
 
+    @GetMapping(path = "/getByCardCode/{cardCode}")
+    @ApiOperation(value = "查询当前用户信息", notes = "查询当前用户信息接口")
+    @LoginRequired
+    public CommonResponse getByCardCode(@PathVariable("cardCode") String cardCode, @ApiIgnore User loginUser) throws BusinessException {
+        User user = userService.getByCardCode(cardCode);
+        user.setToken(loginUser.getToken());
+        CommonResponse commonResponse = CommonResponse.getInstance(user);
+        return commonResponse;
+    }
+
     @PostMapping(path = "/login")
     @ApiOperation(value = "登陆", notes = "登陆接口")
     public CommonResponse login(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {

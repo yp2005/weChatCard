@@ -38,6 +38,11 @@ public class User implements Serializable {
     private String personName;
 
     @Column(length = 50)
+    @ApiModelProperty(value = "性别")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String sex;
+
+    @Column(length = 50)
     @ApiModelProperty(value = "用户账号")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String userName;
@@ -209,6 +214,14 @@ public class User implements Serializable {
 
     public void setUserImage(String userImage) {
         this.userImage = userImage;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getPassword() {

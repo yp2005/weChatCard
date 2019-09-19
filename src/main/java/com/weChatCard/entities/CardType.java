@@ -36,7 +36,7 @@ public class CardType {
     private String cardName;
 
     @Column(length = 10)
-    @ApiModelProperty(value = "卡类型，1：黄金会员卡，2：铂金会有卡，3：砖石会员卡 (可能？)")
+    @ApiModelProperty(value = "卡类型，1：普通会员卡，2：？？，3：？？")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer cardType;
 

@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Integer>,JpaSpecificationExecutor<Card> {
     @Query("select r from Card r,User ur where r.id = ur.cardId and ur.personName = ?1")
-    Card queryByPersonName(@Param("personName") String personName);
+    Card findByPersonName(@Param("personName") String personName);
 
-    @Query("select r from Card r,User ur where r.id = ur.cardId and ur.userId = ?1")
-    Card queryByUserId(@Param("userName") Integer userId);
+    @Query("select r from Card r,User ur where r.id = ur.cardId and ur.id = ?1")
+    Card findByUserId(@Param("userId") Integer userId);
+
+    Card findByCardCode(@Param("cardCode") String cardCode);
 }
 
 

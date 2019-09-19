@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CardTypeRepository extends JpaRepository<CardType, Integer>,JpaSpecificationExecutor<CardType> {
-    CardType findFirstByCardType(@Param("cardType") Integer cardType);
+    CardType findByCardKey(@Param("cardKey") String cardKey);
 }
 
 

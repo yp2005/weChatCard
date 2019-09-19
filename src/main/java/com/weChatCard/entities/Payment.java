@@ -38,7 +38,7 @@ public class Payment {
     @Column(length = 20)
     @ApiModelProperty(value = "支付金额")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private double money;
+    private Double money;
 
     @Column(length = 1000)
     @ApiModelProperty(value = "支付详情")
@@ -66,11 +66,11 @@ public class Payment {
         this.id = id;
     }
 
-    public double getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 

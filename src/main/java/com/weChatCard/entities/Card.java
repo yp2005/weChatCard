@@ -36,7 +36,7 @@ public class Card {
     private String cardCode;
 
     @Column(length = 10)
-    @ApiModelProperty(value = "卡状态，0-未领取，1：在用，2：停用，3：过期")
+    @ApiModelProperty(value = "卡状态，0-停用 1-在用")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer cardStatus;
 
@@ -49,6 +49,11 @@ public class Card {
     @ApiModelProperty(value = "余额")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private double money;
+
+    @Column(length = 11)
+    @ApiModelProperty(value = "积分")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer bonus;
 
     @Column(updatable = false)
     @ApiModelProperty(value = "创建时间",hidden = true)
@@ -125,6 +130,14 @@ public class Card {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(Integer bonus) {
+        this.bonus = bonus;
     }
 
     public interface Validation{};

@@ -90,6 +90,10 @@ public class Messages {
      * 用户没有登陆或Token已过期
      */
     public static Integer CODE_50401 = 50401;
+    /**
+     * 支付失败:{?}
+     */
+    public static Integer CODE_80005 = 80005;
 
     /**
      * 消息状态码对应的提示信息
@@ -120,5 +124,6 @@ public class Messages {
         put(CODE_50201, "权限不足，无法查看该信息");
         put(CODE_50401, "用户没有登陆或Token已过期");
 
+        put(CODE_80005, "支付失败:{?}");
     }};
 }

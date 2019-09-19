@@ -40,9 +40,17 @@ public class PaymentController {
 
     @PostMapping(path = "/getMy")
     @ApiOperation(value = "获取我的支付记录列表", notes = "查询我的支付记录信息列表")
-    @LoginRequired
+    @LoginRequired(adminRequired = "0")
     public CommonResponse getMy(@RequestBody ListInput listInput,  @ApiIgnore User loginUser) throws BusinessException {
         return CommonResponse.getInstance(this.paymentService.listByUserId(listInput, loginUser.getId()));
+    }
+
+    @PostMapping(path = "/finishPay")
+    @ApiOperation(value = "完成充值", notes = "完成充值接口")
+    @LoginRequired(adminRequired = "0")
+    public CommonResponse finishPay(@ApiIgnore User loginUser) throws BusinessException {
+        this.paymentService.finishPay(loginUser);
+        return CommonResponse.getInstance();
     }
 
     @PostMapping
@@ -51,11 +59,11 @@ public class PaymentController {
         return CommonResponse.getInstance(this.paymentService.add(payment));
     }
 
-    @PutMapping
-    @ApiOperation(value = "修改支付记录", notes = "修改支付记录信息接口")
-    public CommonResponse update(@Validated({Payment.Validation.class}) @RequestBody Payment payment, @ApiIgnore User loginUser) throws BusinessException {
-        return CommonResponse.getInstance(this.paymentService.update(payment));
-    }
+//    @PutMapping
+//    @ApiOperation(value = "修改支付记录", notes = "修改支付记录信息接口")
+//    public CommonResponse update(@Validated({Payment.Validation.class}) @RequestBody Payment payment, @ApiIgnore User loginUser) throws BusinessException {
+//        return CommonResponse.getInstance(this.paymentService.update(payment));
+//    }
 
     @DeleteMapping
     @ApiOperation(value = "删除支付记录", notes = "删除支付记录信息接口")

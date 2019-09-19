@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<User, Integer>,JpaSpecific
     User findByUserName(@Param("userName") String userName);
 
     User findBySubscriptionOpenId(@Param("subscriptionOpenId") String subscriptionOpenId);
+
+    User findByCardId(@Param("cardId") Integer cardId);
 }
