@@ -222,5 +222,49 @@ public class WeChatUtil {
         return this.httpUtil.doPostResult(url, param.toJSONString(), null);
     }
 
-
+    // 查询code接口
+//    {
+//
+//        "code": "12312313"，
+//
+//        "is_expire_dynamic_code":false
+//
+//    }
+    public JSONObject getCardByCode(String accessToken, JSONObject param) {
+        String url = this.wechatUrl + "/card/code/get?access_token=" + accessToken;
+        return this.httpUtil.doPostResult(url, param.toJSONString(), null);
+//        {
+//
+//            "errcode": 0,
+//
+//                "errmsg": "ok",
+//
+//                "card": {
+//
+//            "card_id": "pbLatjgoBuJqFP9vKhYnV1WZKAQA",
+//
+//                    "begin_time": 0,
+//
+//                    "end_time": 2147483647,
+//
+//                    "bonus": 10,
+//
+//                    "balance": 100000,
+//
+//                    "code": "726567952834",
+//
+//                    "membership_number": "726567952834"
+//
+//        },
+//
+//            "openid": "obLatjjwDolFjRRd3doGIdwNqRXw",
+//
+//                "can_consume": true,
+//
+//                "user_card_status": "NORMAL",
+//
+//                "outer_str": "12b"
+//
+//        }
+    }
 }

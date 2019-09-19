@@ -123,7 +123,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/getByCardCode/{cardCode}")
-    @ApiOperation(value = "查询当前用户信息", notes = "查询当前用户信息接口")
+    @ApiOperation(value = "根据动态码查询当前用户信息", notes = "根据动态码查询当前用户信息接口")
     @LoginRequired
     public CommonResponse getByCardCode(@PathVariable("cardCode") String cardCode, @ApiIgnore User loginUser) throws BusinessException {
         User user = userService.getByCardCode(cardCode);

@@ -1,13 +1,17 @@
 package com.weChatCard.service.Impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.weChatCard.bo.SearchPara;
 import com.weChatCard.bo.SearchParas;
 import com.weChatCard.entities.Card;
 import com.weChatCard.entities.User;
+import com.weChatCard.redis.RedisClient;
 import com.weChatCard.repositories.CardRepository;
 import com.weChatCard.repositories.UserRepository;
 import com.weChatCard.service.UserService;
+import com.weChatCard.utils.Constants;
 import com.weChatCard.utils.MySpecification;
+import com.weChatCard.utils.WeChatUtil;
 import com.weChatCard.utils.exception.BusinessException;
 import com.weChatCard.utils.message.Messages;
 import com.weChatCard.vo.ListInput;
@@ -16,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,10 +45,23 @@ public class UserServiceImpl implements UserService {
 
     private CardRepository cardRepository;
 
+    private RedisClient redisClient;
+
+    //公众号APPID
+    @Value("${SUBSCRIPTION_APP_ID}")
+    private String subscriptionAppId;
+
+    //公众号AppSecret
+    @Value("${SUBSCRIPTION_APP_SECRET}")
+    private String subscriptionAppSecret;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, CardRepository cardRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RedisClient redisClient,
+                           CardRepository cardRepository) {
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.redisClient = redisClient;
     }
 
     @Override
@@ -122,15 +140,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByCardCode(String cardCode) throws BusinessException {
-        Card card = this.cardRepository.findByCardCode(cardCode);
-        if (card == null) {
-            throw new BusinessException(Messages.CODE_20001);
+        String token;
+        WeChatUtil wu = new WeChatUtil();
+        try {
+            token = this.redisClient.get(Constants.SUBSCRIPTION_ACCESS_TOKEN);
+            if (token == null) {
+                JSONObject jsonObject = wu.getAccessToken(subscriptionAppId, subscriptionAppSecret);
+                token = jsonObject.getString("access_token");
+                if (token != null) {
+                    redisClient.set(Constants.SUBSCRIPTION_ACCESS_TOKEN, token, 7200);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(Messages.CODE_50000);
         }
-        User user = userRepository.findByCardId(card.getId());
-        if (user == null) {
-            throw new BusinessException(Messages.CODE_20001);
+        if (org.apache.commons.lang3.StringUtils.isEmpty(token)) {
+            throw new BusinessException(Messages.CODE_40010);
         }
-        return user;
+        JSONObject param = new JSONObject();
+        param.put("is_expire_dynamic_code", false);
+        param.put("code", cardCode);
+        JSONObject result = wu.getCardByCode(token, param);
+        if(result.getInteger("errcode").equals(0)) {
+            User user = userRepository.findBySubscriptionOpenId(result.getString("openid"));
+            if (user == null) {
+                throw new BusinessException(Messages.CODE_20001);
+            }
+            return user;
+        }
+        else  {
+            throw new BusinessException(Messages.CODE_40010, result.toJSONString());
+        }
     }
 
 }
