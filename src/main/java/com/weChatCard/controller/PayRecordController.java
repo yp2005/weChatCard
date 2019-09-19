@@ -17,14 +17,14 @@ import java.security.Principal;
 import java.util.List;
 
 /**
- * 支付记录
+ * 微信支付记录
  *
  * @Author: yupeng
  */
 
 @RestController
 @RequestMapping("/payRecord")
-@Api(description = "支付记录")
+@Api(description = "微信支付记录")
 @LoginRequired(adminRequired = "1")
 public class PayRecordController {
 

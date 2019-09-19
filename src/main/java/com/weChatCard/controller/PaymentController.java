@@ -18,13 +18,13 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * 支付记录接口
+ * 会员支付记录接口
  *
  * @Author: yupeng
  */
 @RestController
 @RequestMapping("/payment")
-@Api(description = "支付记录")
+@Api(description = "会员支付记录")
 @LoginRequired(adminRequired = "1")
 public class PaymentController {
 
