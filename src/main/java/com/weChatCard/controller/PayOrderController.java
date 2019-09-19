@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/pay/payOrders")
+@RequestMapping("/payOrder")
 @Api(description = "公用订单")
 @LoginRequired
 public class PayOrderController {

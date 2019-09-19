@@ -28,20 +28,20 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class PayRecordServiceImpl implements PayRecordService{
+public class PayRecordServiceImpl implements PayRecordService {
     private static Logger log = LoggerFactory.getLogger(PayRecordServiceImpl.class);
 
     private PayRecordRepository payRecordRepository;
 
     @Autowired
-    public PayRecordServiceImpl(PayRecordRepository payRecordRepository){
+    public PayRecordServiceImpl(PayRecordRepository payRecordRepository) {
         this.payRecordRepository = payRecordRepository;
     }
 
     @Override
-    public PayRecord add(PayRecord payRecord,String operationPeople) throws BusinessException{
+    public PayRecord add(PayRecord payRecord) throws BusinessException {
         String functionName = "添加支付记录";
-        if(payRecord.getId() != null){
+        if (payRecord.getId() != null) {
             functionName = "编辑支付记录";
         }
         payRecord = payRecordRepository.save(payRecord);
@@ -49,37 +49,37 @@ public class PayRecordServiceImpl implements PayRecordService{
     }
 
     @Override
-    public PayRecord update(PayRecord payRecord,String operationPeople) throws BusinessException{
-        return add(payRecord,operationPeople);
+    public PayRecord update(PayRecord payRecord) throws BusinessException {
+        return payRecordRepository.save(payRecord);
     }
 
     @Override
-    public void delete(List<Integer> ids,String operationPeople) throws BusinessException{
-        for(Integer id:ids){
+    public void delete(List<Integer> ids) throws BusinessException {
+        for (Integer id : ids) {
             payRecordRepository.delete(id);
         }
     }
 
     @Override
-    public ListOutput list(ListInput payRecordListInput,String operationPeople) throws BusinessException {
+    public ListOutput list(ListInput payRecordListInput) throws BusinessException {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        if(StringUtils.isNotBlank(payRecordListInput.getSortDirection())
-                && StringUtils.isNotBlank(payRecordListInput.getSortProperties())){
+        if (StringUtils.isNotBlank(payRecordListInput.getSortDirection())
+                && StringUtils.isNotBlank(payRecordListInput.getSortProperties())) {
             sort = new Sort(Sort.Direction.fromString(payRecordListInput.getSortDirection()), payRecordListInput.getSortProperties());
         }
         Pageable pageable = null;
-        if(payRecordListInput.getPage() != null && payRecordListInput.getPageSize() != null){
+        if (payRecordListInput.getPage() != null && payRecordListInput.getPageSize() != null) {
             pageable = new PageRequest(payRecordListInput.getPage(), payRecordListInput.getPageSize(), sort);
         }
         ListOutput payRecordListOutput = new ListOutput();
-        if(pageable != null){
-            Page list = payRecordRepository.findAll(new MySpecification<PayRecord>(payRecordListInput.getSearchParas()),pageable);
+        if (pageable != null) {
+            Page list = payRecordRepository.findAll(new MySpecification<PayRecord>(payRecordListInput.getSearchParas()), pageable);
             payRecordListOutput.setPage(payRecordListInput.getPage());
             payRecordListOutput.setPageSize(payRecordListInput.getPageSize());
-            payRecordListOutput.setTotalNum((int)list.getTotalElements());
+            payRecordListOutput.setTotalNum((int) list.getTotalElements());
             payRecordListOutput.setList(list.getContent());
-        }else {
-            List list = payRecordRepository.findAll(new MySpecification<PayRecord>(payRecordListInput.getSearchParas()),sort);
+        } else {
+            List list = payRecordRepository.findAll(new MySpecification<PayRecord>(payRecordListInput.getSearchParas()), sort);
             payRecordListOutput.setTotalNum(list.size());
             payRecordListOutput.setList(list);
         }
@@ -87,9 +87,9 @@ public class PayRecordServiceImpl implements PayRecordService{
     }
 
     @Override
-    public PayRecord get(Integer id,String operationPeople) throws BusinessException{
+    public PayRecord get(Integer id) throws BusinessException {
         PayRecord payRecord = payRecordRepository.findOne(id);
-        if(payRecord == null){
+        if (payRecord == null) {
             throw new BusinessException(Messages.CODE_20001);
         }
         return payRecord;

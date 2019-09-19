@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/pay/payRecords")
+@RequestMapping("/payRecord")
 @Api(description = "支付记录")
 @LoginRequired(adminRequired = "1")
 public class PayRecordController {

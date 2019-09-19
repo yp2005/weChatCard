@@ -50,7 +50,7 @@ import java.util.TreeMap;
  */
 
 @RestController
-@RequestMapping("/pay/wechat")
+@RequestMapping("/wechatpay")
 @Api(description = "微信支付")
 public class WeChatPayController {
     private static Logger log = LoggerFactory.getLogger(WeChatPayController.class);
