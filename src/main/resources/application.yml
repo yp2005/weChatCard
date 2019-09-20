@@ -13,6 +13,7 @@ spring:
 ---
 SUBSCRIPTION_APP_ID: 123
 SUBSCRIPTION_APP_SECRET: 123456
+UPLOAD_FILE_PATH: /static/upload
 spring:
   profiles: dev
   datasource:
@@ -45,6 +46,7 @@ swagger.enable: true
 ---
 SUBSCRIPTION_APP_ID: 123
 SUBSCRIPTION_APP_SECRET: 123456
+UPLOAD_FILE_PATH: /static/upload
 spring:
   redis:
     host: redis
@@ -66,7 +68,6 @@ spring:
 logging:
   level:
     root: info
-UPLOAD_FILE_PATH: /static/upload
 jedis:
   pool:
     host: redis
